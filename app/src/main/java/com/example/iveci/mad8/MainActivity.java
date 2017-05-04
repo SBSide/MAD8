@@ -112,6 +112,27 @@ public class MainActivity extends AppCompatActivity {
                 webView.loadUrl(urls.get(position));
             }
         });
+        listView.setOnItemLongClickListener(new AdapterView.OnItemLongClickListener() {
+            @Override
+            public boolean onItemLongClick(AdapterView<?> parent, View view, final int position, long id) {
+                AlertDialog.Builder dlg = new AlertDialog.Builder(MainActivity.this);
+                dlg.setTitle("즐겨찾기 항목삭제")
+                        .setMessage("즐겨찾기 항목을 삭제하시겠습니까?")
+                        .setPositiveButton("YES", new DialogInterface.OnClickListener() {
+                            @Override
+                            public void onClick(DialogInterface dialog, int which) {
+                                names.remove(position);
+                                urls.remove(position);
+                                adapter.notifyDataSetChanged();
+                                Toast.makeText(getApplicationContext(),
+                                        "삭제되었습니다.", Toast.LENGTH_SHORT).show();
+                            }
+                        })
+                        .setNegativeButton("NO", null)
+                        .show();
+                return true;
+            }
+        });
     }
 
     @Override
@@ -132,8 +153,6 @@ public class MainActivity extends AppCompatActivity {
         else if (item.getItemId() == 2){
             listView.setVisibility(View.INVISIBLE);
             webView.setVisibility(View.VISIBLE);
-            linear.setAnimation(animTop);
-            animTop.start();
             webView.loadUrl("file:///android_asset/www/urladd.html");
         }
         return super.onOptionsItemSelected(item);
@@ -177,12 +196,19 @@ public class MainActivity extends AppCompatActivity {
             handler.post(new Runnable() {
                 @Override
                 public void run() {
+                    boolean eq = false;
                     for (String s : urls){
-                        if (s.equals(address)) webView.loadUrl("javascript:displayMsg()");
+                        if (s.equals(address)) {
+                            webView.loadUrl("javascript:displayMsg()");
+                            eq = true;
+                            break;
+                        }
                     }
-                    names.add("<" + sitename + "> " + address);
-                    urls.add(address);
-                    adapter.notifyDataSetChanged();
+                    if (!eq) {
+                        names.add("<" + sitename + "> " + address);
+                        urls.add(address);
+                        adapter.notifyDataSetChanged();
+                    }
                 }
             });
         }
