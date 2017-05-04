@@ -1,0 +1,74 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN">
+<!-- saved from url=(0047)http://jerry1004.dothome.co.kr/info/urladd.html -->
+<html><head><meta http-equiv="Content-Type" content="text/html; charset=EUC-KR">
+  <title> New Document </title>
+  <style>
+	html, * {
+		font-size:16px;
+	}
+
+	body {text-align:center;background-color:#FFE3FF}
+	div { 
+		text-align:center; 
+		padding-top:10px;
+		color:blue;
+	}
+  </style>
+
+  <script>
+	function displayMsg(){
+		var str = "동일한 사이트가 등록되어 있습니다.";
+		document.getElementById('msg').innerText = str;
+		document.getElementById('url').value='';
+		document.getElementById('url').focus();
+	}
+
+	function setMsg(msg){		
+		document.getElementById('msg').innerText = msg;		
+	}
+	
+	function siteAdd(){
+		var sitename = document.getElementById('sitename');
+		if(sitename.value==''){
+			setMsg('사이트명을 입력하세요');
+			sitename.focus();
+			return;
+		}
+
+		var url = document.getElementById('url');
+		if(url.value==''){
+			setMsg('URL을 입력하세요');
+			url.focus();
+			return;
+		}
+		myApp.addlist(sitename.value, url.value);
+		setMsg('즐겨찾기가 추가되었습니다.');//여기에 앱 메소드 호출
+
+	}
+
+	function showURL(){
+	    myApp.displayURL();
+	}
+  </script>
+ </head>
+
+ <body style="text-align:center;background-color:#FFCCFF">
+  <input type="button" value="URL 보이기" onclick="showURL()">
+  <h3>즐겨찾기를 추가해 보세요</h3>
+ <table style="background-color:#FFF2FF" align="center">
+ <tbody><tr>
+	<td>사이트명</td>
+	<td><input type="text" id="sitename"></td>
+ </tr>
+ <tr>
+	<td>url</td>
+	<td><input type="text" id="url"></td>
+ </tr>
+ <tr>
+	<td colspan="2" align="center"><input type="button" value="즐겨찾기추가" onclick="siteAdd()"></td>
+ </tr>
+ </tbody></table>
+ <div id="msg"></div>
+ 
+
+</body></html>
